@@ -1,0 +1,47 @@
+<div class="input-group mb-3">
+  <input
+    type="number"
+    class="form-control"
+    placeholder="Enter the user id"
+    aria-describedby="basic-addon2"
+    [(ngModel)]="userId"
+  />
+  <div class="input-group-append">
+    <button
+      class="btn btn-outline-secondary"
+      type="button"
+      (click)="showPhotosUsersList()"
+    >
+      Buscar
+    </button>
+  </div>
+</div>
+
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">albumId</th>
+        <th scope="col">ID</th>
+        <th scope="col">Title</th>
+        <th scope="col">Url</th>
+        <th scope="col">ThumbnailUrl</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let item of PhotoList | paginate : { itemsPerPage: 10, currentPage: p }
+        "
+      >
+        <td>{{ item.userId }}</td>
+        <td>{{ item.id }}</td>
+        <td>{{ item.title }}</td>
+        <td>{{ item.url }}</td>
+        <td>{{ item.thumbnailUrl }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  <p>Note: The API takes approximately 10 seconds to display the information</p>
+</div>

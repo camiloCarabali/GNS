@@ -1,0 +1,41 @@
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Date</th>
+        <th scope="col">Method</th>
+        <th scope="col">Consult</th>
+        <th scope="col">DataReturn</th>
+        <th scope="col">Options</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let item of requestList
+            | paginate : { itemsPerPage: 10, currentPage: p }
+        "
+      >
+        <td>{{ item.id }}</td>
+        <td>{{ item.date }}</td>
+        <td>{{ item.method }}</td>
+        <td>{{ item.consult }}</td>
+        <td>
+          <div [ngClass]="{ 'expanded-row': expandedItemIndex === item.id }">
+            <div *ngIf="expandedItemIndex !== item.id">
+              {{ item.dataReturn | slice:0:100 }}
+              <a (click)="toggleExpanded(item.id)">... <strong>Ver más</strong></a>
+            </div>
+            <div *ngIf="expandedItemIndex === item.id">
+              {{ item.dataReturn }}
+              <a (click)="toggleExpanded(item.id)"><strong>Ver menos</strong></a>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-outline-success" (click)="exportToExcel()">Export</button>
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</div>
