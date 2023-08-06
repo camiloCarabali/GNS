@@ -17,7 +17,16 @@ export class ShowRequestComponent implements OnInit {
   requestList: any = [];
   requestListComplete: any = [];
 
+  ModalTitle: string = '';
+  activateEditComp: boolean = false;
+  req: any;
+
   ngOnInit(): void {
+    this.showRequestList();
+  }
+
+  closeClick() {
+    this.activateEditComp = false;
     this.showRequestList();
   }
 
@@ -26,6 +35,12 @@ export class ShowRequestComponent implements OnInit {
       this.requestListComplete = JSON.parse(JSON.stringify(data));
       this.requestList = data;
     });
+  }
+
+  editRequest(item: any) {
+    this.req = item;
+    this.ModalTitle = 'Edit Request';
+    this.activateEditComp = true;
   }
 
   toggleExpanded(index: number) {
@@ -48,8 +63,13 @@ export class ShowRequestComponent implements OnInit {
 
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Datos');
 
-    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array',
+    });
+    const blob = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
     const fileName = 'data.xlsx';
 
     const url = window.URL.createObjectURL(blob);
@@ -60,4 +80,12 @@ export class ShowRequestComponent implements OnInit {
     window.URL.revokeObjectURL(url);
   }
 
+  deleteRequest(item: any) {
+    if (confirm('Are you Sure?')) {
+      this.service.deleteRequest(item.id).subscribe((data) => {
+        alert(data.toString());
+        this.showRequestList();
+      });
+    }
+  }
 }

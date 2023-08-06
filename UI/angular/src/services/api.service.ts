@@ -26,6 +26,14 @@ export class APIService {
     return this.http.get<any[]>(this.endpoint + 'showRequests')
   }
 
+  updateRequest(val: any){
+    return this.http.put(this.endpoint + 'modifyRequests/', val)
+  }
+
+  deleteRequest(val: any){
+    return this.http.delete(this.endpoint + 'deleteRequests/' + val)
+  }
+
   
 
 

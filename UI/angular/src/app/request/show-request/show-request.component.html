@@ -1,3 +1,35 @@
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ ModalTitle }}</h5>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="closeClick()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-edit-request
+          [req]="req"
+          *ngIf="activateEditComp"
+        ></app-edit-request>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="container">
   <table class="table table-striped">
     <thead>
@@ -24,18 +56,36 @@
         <td>
           <div [ngClass]="{ 'expanded-row': expandedItemIndex === item.id }">
             <div *ngIf="expandedItemIndex !== item.id">
-              {{ item.dataReturn | slice:0:100 }}
-              <a (click)="toggleExpanded(item.id)">... <strong>Ver más</strong></a>
+              {{ item.dataReturn | slice : 0 : 100 }}
+              <a (click)="toggleExpanded(item.id)"
+                >... <strong>Ver más</strong></a
+              >
             </div>
             <div *ngIf="expandedItemIndex === item.id">
               {{ item.dataReturn }}
-              <a (click)="toggleExpanded(item.id)"><strong>Ver menos</strong></a>
+              <a (click)="toggleExpanded(item.id)"
+                ><strong>Ver menos</strong></a
+              >
             </div>
           </div>
+        </td>
+        <td>
+          <i
+            class="bi bi-pen-fill"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            (click)="editRequest(item)"
+          ></i>
+          <i class="bi bi-trash3-fill" (click)="deleteRequest(item)"></i>
         </td>
       </tr>
     </tbody>
   </table>
-  <button class="btn btn-outline-success" (click)="exportToExcel()">Export</button>
+  <button class="btn btn-outline-success" (click)="exportToExcel()">
+    Export
+  </button>
   <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>
